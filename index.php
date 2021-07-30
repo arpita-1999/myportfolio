@@ -1,934 +1,400 @@
 <?php
-require('../include/db.php');
-if(!isset($_SESSION['isUserLoggedIn'])){
-  echo "<script>window.location.href = 'login.php';</script>";
-}
-$query = "SELECT * FROM home,section_control,social_media,about,contact,site_background,seo,admin";
+require('include/db.php');
+$query = "SELECT * FROM home,section_control,social_media,about,contact,site_background,seo";
 $run = mysqli_query($db,$query);
 $user_data = mysqli_fetch_array($run);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Dashboard</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <title><?=$user_data['page_title']?></title>
+  <meta content="<?=$user_data['description']?>" name="description">
+  <meta content="<?=$user_data['keywords']?>" name="keywords">
+
+  <!-- Favicons -->
+  <link href="images/<?=$user_data['siteicon']?>" rel="icon">
+  <link href="images/<?=$user_data['siteicon']?>" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Personal - v4.3.0
+  * Template URL: https://bootstrapmade.com/personal-free-resume-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    
-    </ul>
+<body style="background:url('../images/<?=$user_data['background_img']?>') top right no-repeat;">
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
-      
-      <!-- Notifications Dropdown Menu -->
-    
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../include/logout.php">
-          Logout
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
+  <!-- ======= Header ======= -->
+  <header id="header" class="header-tops">
+    <div class="container">
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Admin Panel</span>
-    </a>
+      <h1><a href="index.php"><?=$user_data['title']?></a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a> -->
+      <h2><?=$user_data['subtitle']?></h2>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../images/<?=$user_data['admin_profile']?>" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block"><?=$user_data['fullname']?></a>
-        </div>
-      </div>
+      <nav id="navbar" class="navbar">
+        <ul>
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="index.php" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Section Control
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?homesetting=true" class="nav-link">
-            <i class="nav-icon fa fa-home"></i>
-              <p>
-                Home Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?aboutsetting=true" class="nav-link">
-              <i class="nav-icon fa fa-info-circle"></i>
-              <p>
-                About Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?resumesetting=true" class="nav-link">
-              <i class="nav-icon fa fa-graduation-cap"></i>
-              <p>
-                Resume Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?portfoliosetting=true" class="nav-link">
-              <i class="nav-icon fa fa-user-secret"></i>
-              <p>
-                Portfolio Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?contactsetting=true" class="nav-link">
-              <i class="nav-icon fa fa-link"></i>
-              <p>
-                Contact Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?backgroundsetting=true" class="nav-link">
-              <i class="nav-icon fa fa-desktop"></i>
-              <p>
-                Background Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?seosetting=true" class="nav-link">
-              <i class="nav-icon fa fa-cogs"></i>
-              <p>
-                SEO Settings
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item menu-open">
-            <a href="index.php?accountsetting=true" class="nav-link">
-              <i class="nav-icon fa fa-users"></i>
-              <p>
-                Account Settings
-              </p>
-            </a>
-          </li>
+<?php
+if($user_data['home_section']){
+  ?>
+  <li><a class="nav-link active" href="#header">Home</a></li>
+  <?php
+}
+if($user_data['about_section']){
+  ?>
+  <li><a class="nav-link" href="#about">About</a></li>
+  <?php
+}
+if($user_data['resume_section']){
+  ?>
+  <li><a class="nav-link" href="#resume">Resume</a></li>
+  <?php
+}
+if($user_data['portfolio_section']){
+  ?>
+  <li><a class="nav-link" href="#portfolio">Portfolio</a></li>
+  <?php
+}
+if($user_data['contact_section']){
+  ?>
+  <li><a class="nav-link" href="#contact">Contact</a></li>
+  <?php
+}
+?>
         </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+<?php
+if($user_data['showicons']){
+  ?>
+  <div class="social-links">
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Manage Visibility</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        
-        <!-- /.row -->
-        <!-- Main row -->
-        <div class="row">
-          <?php
-          if(isset($_GET['homesetting'])){ 
-          ?>
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Update Home</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" action="../include/admin.php" method="post">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Full Name</label>
-                    <input type="text" class="form-control" name="title" value="<?=$user_data['title']?>" id="exampleInputEmail1" placeholder="Enter your full name">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Subtitle</label>
-                    <input type="text" class="form-control" name="subtitle" value="<?=$user_data['subtitle']?>" id="exampleInputPassword1" placeholder="Describe yourself in one line">
-                  </div>
-                  
-                  <div class="form-check">
-                    <input type="checkbox" name="showicons" class="form-check-input" id="exampleCheck1"
-                    <?php
-                      if($user_data['showicons']){
-                         echo "checked";
-                      }
-                    ?>
-                    >
-                    <label class="form-check-label" for="exampleCheck1">Show Social Icons</label>
-                  </div>
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-home" class="btn btn-primary">Save Changes</button>
-                </div>
-              </form>
-            </div>
-          <?php
-
-          }else if(isset($_GET['aboutsetting'])){
-            ?>
-              <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Update About</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <img src="../images/<?=$user_data['profile_pic']?>" class="col-2"?>
-              <form role="form" action="../include/admin.php" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Profile Picture</label>
-                    <input type="file" class="form-control" name="profile">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">About You</label>
-                    <input type="text" class="form-control" name="abouttitle" value="<?=$user_data['about_title']?>" id="exampleInputEmail1" placeholder="Enter info about you">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Brief Introduction</label>
-                    <input type="text" class="form-control" name="aboutsubtitle" value="<?=$user_data['about_subtitle']?>" id="exampleInputPassword1" placeholder="Describe your work">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Description</label><br>
-                    <textarea cols="100" name="aboutdesc"><?=$user_data['about_desc']?></textarea>
-                  </div>
-              
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-about" class="btn btn-primary">Save Changes</button>
-                </div>
-              </form>
-              </div>
-
-              <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Manage Skills</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Skills Table</h3>
-
-              
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">Sl no.</th>
-                      <th style="width: 20%">Skills</th>
-                      <th>Efficiency</th>
-                      <th style="width: 20%">%age</th>
-                      <th style="width: 10%">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $q = "SELECT * FROM skill";
-                    $r = mysqli_query($db,$q);
-                    $c = 1;
-                    while($skill=mysqli_fetch_array($r)){
-                      ?>
-                      <tr>
-                      <td><?=$c?></td>
-                      <td><?=$skill['skill_name']?></td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: <?=$skill['skill_level']?>%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-danger"><?=$skill['skill_level']?>%</span></td>
-                      <td>
-                        <a href="../include/deleteskill.php?id=<?=$skill['id']?>">Remove</a>
-                      </td>
-                    </tr>
-                      <?php
-                      $c++;
-                    }
-                    ?>
-                    
-                
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-              </div>
-              <form role="form" action="../include/admin.php" method="post">
-                <div class="card-body">
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Skill Name</label>
-                    <input type="text" class="form-control" name="skillname" placeholder="e.g. HTML/CSS/JavaScript etc.">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Skill Level</label>
-                    <input type="range" min="1" max="100" class="form-control" name="skilllevel" id="exampleInputEmail1">
-                  </div>
-                  
-              
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="add-skill" class="btn btn-primary">Add Skills</button>
-                </div>
-              </form>
-            </div>
-
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Manage Personal Info</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Personal Info</h3>
-
-              
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">Sl no.</th>
-                      <th style="width: 20%">Label</th>
-                      <th style="width: 20%">Value</th>
-                      
-                      <th style="width: 10%">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $q = "SELECT * FROM personal_info";
-                    $r = mysqli_query($db,$q);
-                    $c = 1;
-                    while($pi=mysqli_fetch_array($r)){
-                      ?>
-                      <tr>
-                      <td><?=$c?></td>
-                      <td><?=$pi['label']?></td>
-                      <td><?=$pi['value']?></td>
-                      <td>
-                        <a href="../include/deletepi.php?id=<?=$pi['id']?>">Remove</a>
-                      </td>
-                    </tr>
-                      <?php
-                      $c++;
-                    }
-                    ?>
-                    
-                
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-              <form role="form" action="../include/admin.php" method="post">
-                <div class="card-body">
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Label Name</label>
-                    <input type="text" class="form-control" name="label" placeholder="e.g. Contact no, Email-Id, Website etc.">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Label Value</label>
-                    <input type="text" class="form-control" name="value" id="exampleInputEmail1">
-                  </div>
-                  
-              
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="add-pi" class="btn btn-primary">Add Personal Info</button>
-                </div>
-              </form>
-            </div>
-
-            <?php
-
-          }else if(isset($_GET['resumesetting'])){
-            ?>
-
-           <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Manage Resume</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Academics & Experience</h3>
-
-              
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">Sl no.</th>
-                      <th>Type</th>
-                      <th>Title</th>
-                      <th>Organisation</th>
-                      <th>Duration</th>
-                      <th>About</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $q = "SELECT * FROM resume";
-                    $r = mysqli_query($db,$q);
-                    $c = 1;
-                    while($pi=mysqli_fetch_array($r)){
-                      ?>
-                      <tr>
-                      <td><?=$c?></td>
-                      <td><?=$pi['type']?></td>
-                      <td><?=$pi['title']?></td>
-                      <td><?=$pi['time']?></td>
-                      <td><?=$pi['org']?></td>
-                      <td><?=$pi['about_exp']?></td>
-                      <td>
-                        <a href="../include/deleteresume.php?id=<?=$pi['id']?>">Remove</a>
-                      </td>
-                    </tr>
-                      <?php
-                      $c++;
-                    }
-                    ?>
-                    
-                
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-              <form role="form" action="../include/admin.php" method="post">
-                <div class="card-body">
-                <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Category</label><br>
-                    <select name="type" class="form-control">
-                      <option value='e'>Education</option>
-                      <option value='p'>Profession</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Title</label>
-                    <input type="text" class="form-control" name="title">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Organisation</label>
-                    <input type="text" class="form-control" name="org" id="exampleInputEmail1">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Duration</label>
-                    <input type="text" class="form-control" name="time" id="exampleInputEmail1">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">About</label>
-                    <input type="text" class="form-control" name="about" id="exampleInputEmail1">
-                  </div>                  
-              
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="add-resume" class="btn btn-primary">Add Details</button>
-                </div>
-              </form>
-          </div>
-
-            <?php
-          }else if(isset($_GET['portfoliosetting'])){
-            ?>
-            
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Manage Portfolio</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Your Projects</h3>
-
-              
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th style="width: 10%">Sl no.</th>
-                      <th>Project Type</th>
-                      <th>Project Image</th>
-                      <th>Project Name</th>
-                      <th>Project Link</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $q = "SELECT * FROM portfolio";
-                    $r = mysqli_query($db,$q);
-                    $c = 1;
-                    while($pi=mysqli_fetch_array($r)){
-                      ?>
-                      <tr>
-                      <td><?=$c?></td>
-                      <td><?=$pi['project_type']?></td>
-                      <td><img src="../images/<?=$pi['project_pic']?>" style="width:150px"/></td>
-                      <td><?=$pi['project_name']?></td>
-                      <td><a href="<?=$pi['project_link']?>" target="_blank">Open Link</td>
-                      <td>
-                        <a href="../include/deleteportfolio.php?id=<?=$pi['id']?>">Remove</a>
-                      </td>
-                    </tr>
-                      <?php
-                      $c++;
-                    }
-                    ?>
-                    
-                
-                  </tbody>
-                  </table>
-              </div>
-              <!-- /.card-body -->
-             </div>
-              <form role="form" action="../include/admin.php" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Category</label><br>
-                    <select name="type" class="form-control">
-                      <option value='SOFTWARE'>SOFTWARE</option>
-                      <option value='APPLICATION'>APPLICATION</option>
-                      <option value='WEBSITE'>WEBSITE</option>
-                      <option value='ANIMATION'>ANIMATION</option>
-                      <option value='PRODUCT'>PRODUCT</option>
-                      <option value='YOUTUBE'>YOUTUBE</option>
-                      <option value='IDEA'>IDEA</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Project Image</label>
-                    <input type="file" class="form-control" name="project_pic">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Project Name</label>
-                    <input type="text" class="form-control" name="project_name" id="exampleInputEmail1">
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="exampleInputEmail1">Project Link</label>
-                    <input type="text" class="form-control" name="project_link" id="exampleInputEmail1">
-                  </div>
-                                 
-              
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="add-project" class="btn btn-primary">Add Projects</button>
-                </div>
-              </form>
-          </div>
-
-            <?php
-          }else if(isset($_GET['contactsetting'])){
-            ?>
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Update Contact Details</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" action="../include/admin.php" method="post">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Address</label>
-                    <input type="text" class="form-control" name="address" value="<?=$user_data['address']?>" id="exampleInputEmail1" placeholder="Enter address">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Email ID</label>
-                    <input type="email" class="form-control" name="email" value="<?=$user_data['email']?>" id="exampleInputPassword1" placeholder="Enter email-ID">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Contact No.</label>
-                    <input type="number" class="form-control" name="mobile" value="<?=$user_data['mobile']?>" id="exampleInputPassword1" placeholder="Enter mobile no.">
-                  </div>
-                  
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-contact" class="btn btn-primary">Save Details</button>
-                </div>
-              </form>
-            </div>
-
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Update Social Media Details</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" action="../include/admin.php" method="post">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Twitter</label>
-                    <input type="text" class="form-control" name="twitter" value="<?=$user_data['twitter']?>" id="exampleInputEmail1" placeholder="Enter username">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Facebook</label>
-                    <input type="text" class="form-control" name="facebook" value="<?=$user_data['facebook']?>" id="exampleInputPassword1" placeholder="Enter username">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Instagram</label>
-                    <input type="text" class="form-control" name="instagram" value="<?=$user_data['instagram']?>" id="exampleInputPassword1" placeholder="Enter username">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Skype</label>
-                    <input type="text" class="form-control" name="skype" value="<?=$user_data['skype']?>" id="exampleInputPassword1" placeholder="Enter username">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">LinkedIn</label>
-                    <input type="text" class="form-control" name="linkedin" value="<?=$user_data['linkedin']?>" id="exampleInputPassword1" placeholder="Enter username">
-                  </div>
-                  
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-socialmedia" class="btn btn-primary">Save Details</button>
-                </div>
-              </form>
-            </div>
-
-            <?php
-          }else if(isset($_GET['backgroundsetting'])){
-            ?>
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Change Background Image</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <img src="../images/<?=$user_data['background_img']?>" class="col-5">
-              <form role="form" action="../include/admin.php" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Choose Background Image</label>
-                    <input type="file" class="form-control" name="background">
-                  </div>
-                  
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-background" class="btn btn-primary">Update Background</button>
-                </div>
-              </form>
-            </div>
-            <?php
-          }else if(isset($_GET['seosetting'])){
-            ?>
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Update SEO</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <img src="../images/<?=$user_data['siteicon']?>" class="col-3">
-              <form role="form" action="../include/admin.php" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Site-icon</label>
-                    <input type="file" class="form-control" name="siteicon">
-                  </div>
-                  
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Page Title</label>
-                    <input type="text" class="form-control" name="page_title" value="<?=$user_data['page_title']?>">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Enter Keywords(',' separator)</label>
-                    <input type="text" class="form-control" name="keywords" value="<?=$user_data['keywords']?>" placeholder="Separate with a comma(,)">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Description</label>
-                    <input type="text" class="form-control" name="description" value="<?=$user_data['description']?>">
-                  </div>
-
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-seo" class="btn btn-primary">Save Changes</button>
-                </div>
-              </form>
-            </div>
-            <?php
-          }else if(isset($_GET['accountsetting'])){
-            ?>
-            
-            <div class="card card-primary col-lg-12">
-              <div class="card-header">
-                <h3 class="card-title">Update Account</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <img src="../images/<?=$user_data['admin_profile']?>" class="col-3">
-              <form role="form" action="../include/admin.php" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Profile Picture</label>
-                    <input type="file" class="form-control" name="profilepic">
-                  </div>
-                  
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Full Name</label>
-                    <input type="text" class="form-control" name="fullname" value="<?=$user_data['fullname']?>">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Email ID</label>
-                    <input type="email" class="form-control" name="email" value="<?=$user_data['email']?>">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Password</label>
-                    <input type="password" class="form-control" name="password" value="<?=$user_data['password']?>">
-                  </div>
-
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" name="update-account" class="btn btn-primary">Update Account</button>
-                </div>
-              </form>
-              <?php
-          }else{
-            ?>
-    
-          <form method="post" action="../include/admin.php">
-          <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-              <input type="checkbox" name="home" class="custom-control-input" id="customSwitch1"
-              <?php
-              if($user_data['home_section']){
-                echo "checked";
-              }
-              ?>
-              >
-              <label class="custom-control-label" for="customSwitch1">Home Section</label>
-          </div>
-
-          <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-            <input type="checkbox" name="about" class="custom-control-input" id="customSwitch2"
-            <?php
-              if($user_data['about_section']){
-                echo "checked";
-              }
-              ?>
-              >
-            <label class="custom-control-label" for="customSwitch2">About Section</label>
-          </div>
-
-          <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-            <input type="checkbox" name="resume" class="custom-control-input" id="customSwitch3"
-            <?php
-              if($user_data['resume_section']){
-                echo "checked";
-              }
-              ?>
-              >
-            <label class="custom-control-label" for="customSwitch3">Resume Section</label>
-          </div>
-
-          <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-            <input type="checkbox" name="portfolio" class="custom-control-input" id="customSwitch4"
-            <?php
-              if($user_data['portfolio_section']){
-                echo "checked";
-              }
-              ?>
-              >
-            <label class="custom-control-label" for="customSwitch4">Portfolio Section</label>
-          </div>
-
-          <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-            <input type="checkbox" name="contact" class="custom-control-input" id="customSwitch5"
-            <?php
-              if($user_data['contact_section']){
-                echo "checked";
-              }
-              ?>
-              >
-            <label class="custom-control-label" for="customSwitch5">Contact Section</label>
-          </div>
-      <br>
-          <input type="submit" class="btn btn-sm btn-primary" name="update-section" value="Save Changes">
-        </form>
+        <?php if($user_data['twitter']!=''){?>
+          <a href="https://twitter.com/<?=$user_data['twitter']?>" class="twitter"><i class="bi bi-twitter"></i></a>
         <?php
+        }
+        ?>
+
+        <?php if($user_data['facebook']!=''){?>
+          <a href="https://facebook.com/<?=$user_data['facebook']?>" class="facebook"><i class="bi bi-facebook"></i></a>
+        <?php
+        }
+        ?>
+
+        <?php if($user_data['instagram']!=''){?>
+          <a href="https://instagram.com/<?=$user_data['instagram']?>" class="instagram"><i class="bi bi-instagram"></i></a>
+        <?php
+        }
+        ?>
+
+        <?php if($user_data['skype']!=''){?>
+          <a href="https://skype.com/<?=$user_data['skype']?>" class="google-plus"><i class="bi bi-skype"></i></a>
+        <?php
+        }
+        ?>
+
+        <?php if($user_data['linkedin']!=''){?>
+          <a href="https://linkedin.com/<?=$user_data['linkedin']?>" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        <?php
+        }
+        ?>
+
+      </div>
+  <?php
+}
+?>
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= About Section ======= -->
+  <section id="about" class="about">
+
+    <!-- ======= About Me ======= -->
+    <div class="about-me container">
+
+      <div class="section-title">
+        <h2>About</h2>
+        <p>Learn more about me</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4" data-aos="fade-right">
+          <img src="images/<?=$user_data['profile_pic']?>" class="img-fluid" alt="">
+        </div>
+        <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+          <h3><?=$user_data['about_title']?></h3>
+          <p class="fst-italic">
+            <?=$user_data['about_subtitle']?>
+          </p>
+          <div class="row col-lg-12">
+            <div class="col-lg-12">
+              <ul>
+                <?php
+                $query2 = "SELECT * FROM personal_info";
+                $run2 = mysqli_query($db,$query2);
+                while($personal_info = mysqli_fetch_array($run2)){
+                  ?>
+                  <li><i class="bi bi-chevron-right"></i><strong><?=$personal_info['label']?>: </strong> <?=$personal_info['value']?></li>
+                  <?php
+                }
+                ?>
+              </ul>
+            </div>
+          </div>
+          <p>
+            <?=$user_data['about_desc']?>
+          </p>
+        </div>
+      </div>
+
+    </div><!-- End About Me -->
+
+    <!-- ======= Skills  ======= -->
+    <div class="skills container">
+
+      <div class="section-title">
+        <h2>Skills</h2>
+      </div>
+
+      <div class="row skills-content">
+
+        <div class="col-lg-12">
+            <?php
+                $query3 = "SELECT * FROM skill";
+                $run3 = mysqli_query($db,$query3);
+                while($skill = mysqli_fetch_array($run3)){
+                  ?>
+
+                  <div class="progress">
+                  <span class="skill"><?=$skill['skill_name']?> <i class="val"><?=$skill['skill_level']?>%</i></span>
+                  <div class="progress-bar-wrap">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="<?=$skill['skill_level']?>" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  </div>
+
+                  <?php
+                }
+                ?>
+        </div>
+
+      </div>
+
+    </div><!-- End Skills -->
+
+  </section><!-- End About Section -->
+
+  <!-- ======= Resume Section ======= -->
+  <section id="resume" class="resume">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Resume</h2>
+        <p>Check My Resume</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+
+          <h3 class="resume-title">Education</h3>
+
+      <?php
+          $query4 = "SELECT * FROM resume";
+          $run4 = mysqli_query($db,$query4);
+          while($resume = mysqli_fetch_array($run4)){
+            if($resume['type']=='e'){
+          ?>
+            <div class="resume-item">
+            <h4><?=$resume['title']?></h4>
+            <h5><?=$resume['time']?></h5>
+            <p><em><?=$resume['org']?></em></p>
+            <p><?=$resume['about_exp']?></p>
+            </div>
+        <?php
+            }
+          }
+          ?>
+
+        </div>
+        <div class="col-lg-6">
+          <h3 class="resume-title">Professional Experience</h3>
+      <?php
+        $query4 = "SELECT * FROM resume";
+        $run4 = mysqli_query($db,$query4);
+        while($resume = mysqli_fetch_array($run4)){
+          if($resume['type']=='p'){
+        ?>
+            <div class="resume-item">
+            <h4><?=$resume['title']?></h4>
+            <h5><?=$resume['time']?></h5>
+            <p><em><?=$resume['org']?></em></p>
+            <p><?=$resume['about_exp']?></p>
+            </div>
+          <?php
+           }
           }
         ?>
+          
         </div>
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2020 <a href="https://adminlte.io">Admin</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0-rc
+      </div>
+
     </div>
-  </footer>
+  </section><!-- End Resume Section -->
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+  <!-- ======= Portfolio Section ======= -->
+  <section id="portfolio" class="portfolio">
+    <div class="container">
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+      <div class="section-title">
+        <h2>Portfolio</h2>
+        <p>My Works</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 d-flex justify-content-center">
+          
+        </div>
+      </div>
+
+      <div class="row portfolio-container">
+      <?php   
+        $query5 = "SELECT * FROM portfolio";
+        $run5 = mysqli_query($db,$query5);    
+        while($portfolio = mysqli_fetch_array($run5)){
+
+      ?>
+        <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+          <div class="portfolio-wrap">
+            <img src="images/<?=$portfolio['project_pic']?>" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <h4><?=$portfolio['project_name']?></h4>
+              <p><?=$portfolio['project_type']?></p>
+              <div class="portfolio-links">
+                <a href="images/<?=$portfolio['project_pic']?>" data-gall="portfolioGallery" class="venobox" title="App 1"><i class="bx bx-plus"></i></a>
+                <a href="<?=$portfolio['project_link']?>" data-gall="portfolioDetailsGallery" data-vbtype="iframe" class="venobox" title="Portfolio Details"><i class="bx bx-link"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php
+      }
+      ?>
+      </div>
+    </div>
+  </section><!-- End Portfolio Section -->
+
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>Contact Me</p>
+      </div>
+
+      <div class="row mt-2">
+
+        <div class="col-md-6 d-flex align-items-stretch">
+          <div class="info-box">
+            <i class="bx bx-map"></i>
+            <h3>My Address</h3>
+            <p><?=$user_data['address']?></p>
+          </div>
+        </div>
+
+        <div class="col-md-6 mt-4 mt-md-0 d-flex align-items-stretch">
+          <div class="info-box">
+            <i class="bx bx-share-alt"></i>
+            <h3>Social Profiles</h3>
+            <?php if($user_data['twitter']!=''){?>    
+    <a href="https://twitter.com/<?=$user_data['twitter']?>" class="twitter"><i class="bi bi-twitter"></i></a>
+    <?php 
+}
+    ?>
+
+<?php if($user_data['facebook']!=''){?>    
+  <a href="https://facebook.com/<?=$user_data['facebook']?>" class="facebook"><i class="bi bi-facebook"></i></a>
+
+    <?php 
+}
+if($user_data['instagram']!=''){
+    ?>  
+        <a href="https://instagram.com/<?=$user_data['instagram']?>" class="instagram"><i class="bi bi-instagram"></i></a>
+  <?php
+}
+if($user_data['skype']!=''){
+  ?>
+        <a href="https://skype.com/<?=$user_data['skype']?>" class="google-plus"><i class="bi bi-skype"></i></a>
+  <?php
+}
+if($user_data['linkedin']!=''){
+  ?>
+        <a href="https://linkedin.com/<?=$user_data['linkedin']?>" class="linkedin"><i class="bi bi-linkedin"></i></a>
+   <?php
+}
+   ?>
+          </div>
+        </div>
+
+        <div class="col-md-6 mt-4 d-flex align-items-stretch">
+          <div class="info-box">
+            <i class="bx bx-envelope"></i>
+            <h3>Email Me</h3>
+            <p><?=$user_data['email']?></p>
+          </div>
+        </div>
+        <div class="col-md-6 mt-4 d-flex align-items-stretch">
+          <div class="info-box">
+            <i class="bx bx-phone-call"></i>
+            <h3>Call Me</h3>
+            <p><?=$user_data['mobile']?></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- End Contact Section -->
+
+  <div class="credits">
+    <!-- All the links in the footer should remain intact. -->
+    <!-- You can delete the links only if you purchased the pro version. -->
+    <!-- Licensing information: https://bootstrapmade.com/license/ -->
+    <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/personal-free-resume-bootstrap-template/ -->
+    Designed by <a href="https://bootstrapmade.com/">Admin</a>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/purecounter/purecounter.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
 </body>
+
 </html>
